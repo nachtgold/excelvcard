@@ -21,3 +21,7 @@ The address value could have multiple formats:
 * street, zipcode city
 
 The birthday value could be a Excel datetime or only a date without year in the german "dd.mm." format.
+
+After processing the example table the rendered vCard could look like: 
+
+![Demo of a resulting vCard](https://github.com/nachtgold/excelvcard/blob/master/demo.png?raw=true)
