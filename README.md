@@ -1,5 +1,7 @@
 # excelvcard
-Some scripts to link the two worlds: Spreadsheets (OpenDocumentXML) and vCards
+Some scripts to link the two worlds: Spreadsheets (OpenDocumentXML) and vCards.
+
+The code is built upon the two libraries [openpyxl](https://pypi.python.org/pypi/openpyxl) and [vobject](https://pypi.python.org/pypi/vobject/).
 
 ## contacts_excel_to_vcard.py
 
@@ -25,3 +27,7 @@ The birthday value could be a Excel datetime or only a date without year in the 
 After processing the example table the rendered vCard could look like: 
 
 ![Demo of a resulting vCard](https://github.com/nachtgold/excelvcard/blob/master/demo.png?raw=true)
+
+Note: Because I live in Germany, my script prefixes phone numbers with +49. You could change it to your home country.
+
+### So feel free to use it for your own experiments.
