@@ -15,6 +15,9 @@ The column layout of our sample file:
 |---|---|---|---|---|---|---|---|
 | Name | Address | Mobile phone | Home phone | Work phone | Mail address | Birthday | Notes |
 | World, Hello | Street, zipcode city | +1234 | +1234 | +1234 | a@b.cd | Excel date value | lorem ipsum |
+|   | 2nd Street, another city |    |   |   |   |   |   |
+
+### Data spefic details
 
 The address value could have multiple formats:
 
@@ -24,7 +27,11 @@ The address value could have multiple formats:
 
 The birthday value could be a Excel datetime or only a date without year in the german "dd.mm." format.
 
-After processing the example table the rendered vCard could look like: 
+If a row has no name value the script guess, that the data belongs to the previous row and combines boths records. 
+
+### Result
+
+After processing the first data row from the example table the rendered vCard could look like: 
 
 ![Demo of a resulting vCard](https://github.com/nachtgold/excelvcard/blob/master/demo.png?raw=true)
 
