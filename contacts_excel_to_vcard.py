@@ -28,7 +28,7 @@ for row in sheet.iter_rows(min_row=2):
 
     # check all cells of the row if a single value exists
     for cell in row:
-        if isinstance(cell.value, datetime) or isNotBlank(cell.value):
+        if isinstance(cell.value, datetime) or isinstance(cell.value, long) or isNotBlank(cell.value):
             valid_row = True
 
     # only Rows with a single value are interesting
@@ -41,7 +41,8 @@ for row in sheet.iter_rows(min_row=2):
         work_phone = row[4].value
         email = row[5].value
         birthday = row[6].value
-        notes = row[7].value
+        group_name = row[7].value
+        notes = row[8].value
 
         # init contact details
         given_name = None
@@ -54,36 +55,22 @@ for row in sheet.iter_rows(min_row=2):
         if isNotBlank(full_name):
             # Create new contact
             new_contact = vobject.vCard()
-            new_contact.add('fn').value = full_name
 
             # "name" or a name with the pattern "lastname, firstname"
             if ',' in full_name:
                 parts = full_name.split(',')
                 family_name = parts[0].strip()
                 given_name = parts[1].strip()
+                new_contact.add('fn').value = given_name + " " + family_name
             else:
                 given_name = full_name
+                new_contact.add('fn').value = full_name
         else:
             # append on the last contact
             new_contact = last_contact
             full_name = last_contact.fn.value
 
-        file_name = re.sub("[^a-zA-Z]", "", full_name) + '.vcf'
-
-        if isNotBlank(full_address):
-            # split the address as "street, city" or "city"
-            if ',' in full_address:
-                parts = full_address.split(',')
-                street_name = parts[0].strip()
-                city_name = parts[1].strip()
-
-                # if a space in the city name, its assume that the first part is a zipcode
-                if ' ' in city_name:
-                    parts = city_name.split(' ')
-                    zip_code = parts[0].strip()
-                    city_name = parts[1].strip()
-            else:
-                city_name = full_address
+        file_name = re.sub("[^a-zA-Z]", "", "".join(new_contact.fn.value.split())) + '.vcf'
 
         # fix phone numbers
         if isNotBlank(mobile_phone):
@@ -113,7 +100,22 @@ for row in sheet.iter_rows(min_row=2):
             new_contact.add('email').value = email
             new_contact.email.type_param = 'INTERNET'
 
-        new_contact.add('adr').value = vobject.vcard.Address(street=street_name, city=city_name, code=zip_code)
+        if isNotBlank(full_address):
+            # split the address as "street, city" or "city"
+            if ',' in full_address:
+                parts = full_address.split(',')
+                street_name = parts[0].strip()
+                city_name = parts[1].strip()
+
+                # if a space in the city name, its assume that the first part is a zipcode
+                if ' ' in city_name:
+                    parts = city_name.split(' ')
+                    zip_code = parts[0].strip()
+                    city_name = parts[1].strip()
+            else:
+                city_name = full_address
+
+            new_contact.add('adr').value = vobject.vcard.Address(street=street_name, city=city_name, code=zip_code)
 
         if isNotBlank(mobile_phone):
             mobile = new_contact.add('tel')
@@ -135,6 +137,11 @@ for row in sheet.iter_rows(min_row=2):
         elif isinstance(birthday, str):
             new_contact.add('bday').value = datetime.strptime(birthday, '%d.%m.').strftime('--%m-%d')
 
+        # optional grouping
+        if isNotBlank(group_name):
+            new_contact.add('categories').value = [group_name]
+
+        # custom notes
         if isNotBlank(notes):
             new_contact.add('note').value = notes
 
