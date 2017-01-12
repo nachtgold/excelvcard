@@ -11,8 +11,8 @@ I was asked if it is possible to convert a Excel based contacts list to business
 
 The column layout of our sample file:
 
-| A | B | C | D | E | F | G | H |
-|---|---|---|---|---|---|---|---|
+| A | B | C | D | E | F | G | H | I |
+|---|---|---|---|---|---|---|---|---|
 | Name | Address | Mobile phone | Home phone | Work phone | Mail address | Birthday | Group | Notes |
 | World, Hello | Street, zipcode city | +1234 | +1234 | +1234 | a@b.cd | Excel date value | A | lorem ipsum |
 |   | 2nd Street, another city |    |   |   |   |   |   |   |
